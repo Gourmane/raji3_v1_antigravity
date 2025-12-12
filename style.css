@@ -405,6 +405,8 @@ body {
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    min-width: 0;
+    /* Prevent grid blowout */
 }
 
 .fusion-input-wrapper {
