@@ -403,15 +403,14 @@ body {
 .fusion-column {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: 8px;
+    width: 100%;
 }
 
-.fusion-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--accent-neon);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.fusion-input-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .fusion-select {
@@ -428,6 +427,10 @@ body {
     padding-right: 32px;
     min-height: 48px;
     cursor: pointer;
+    flex: 1;
+    /* Take remaining space */
+    min-width: 0;
+    /* Prevent overflow */
 }
 
 .fusion-select:focus {
@@ -658,7 +661,7 @@ body {
 
     .card-body {
         padding: var(--spacing-sm);
-        margin-bottom: 50px;
+        margin-bottom: 35px;
     }
 
     .fusion-grid {
