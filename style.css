@@ -220,6 +220,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    flex: 1;
+    /* Allow growing */
+    width: 100%;
+    /* Ensure full width in grid cells */
+    min-width: 0;
+    /* Prevent flex overflow */
 }
 
 .input-group label {
@@ -652,6 +658,7 @@ body {
 
     .card-body {
         padding: var(--spacing-sm);
+        margin-bottom: 50px;
     }
 
     .fusion-grid {
