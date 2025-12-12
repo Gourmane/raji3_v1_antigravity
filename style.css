@@ -79,8 +79,8 @@ body {
 .app-main {
     flex: 1;
     padding: var(--spacing-sm);
-    /* Increased padding bottom to strictly prevent nav overlap */
-    padding-bottom: calc(var(--nav-height) + 60px + var(--safe-bottom));
+    /* Increased padding bottom significantly to strictly prevent nav overlap */
+    padding-bottom: 140px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
