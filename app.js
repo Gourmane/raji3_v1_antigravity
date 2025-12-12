@@ -143,32 +143,6 @@ toastStyles.textContent = `
 document.head.appendChild(toastStyles);
 
 // ============================================
-// Loading Overlay Functions
-// ============================================
-let loadingOverlay = null;
-let loadingMessage = null;
-
-function initLoader() {
-    loadingOverlay = document.getElementById('loading-overlay');
-    loadingMessage = document.getElementById('loading-message');
-}
-
-function showLoader(message = 'Chargement...') {
-    if (!loadingOverlay) initLoader();
-    if (loadingOverlay) {
-        loadingMessage.textContent = message;
-        loadingOverlay.classList.remove('hidden');
-    }
-}
-
-function hideLoader() {
-    if (!loadingOverlay) initLoader();
-    if (loadingOverlay) {
-        loadingOverlay.classList.add('hidden');
-    }
-}
-
-// ============================================
 // IndexedDB Storage (fallback for large files)
 // ============================================
 async function initIndexedDB() {
@@ -471,17 +445,11 @@ async function extractLoop() {
     }
 
     els.btnExtractLoop.disabled = true;
-    showLoader('Extraction du loop...');
-
-    let audioContext = null;
+    els.btnExtractLoop.querySelector('span').textContent = 'Extraction...';
 
     try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const buffer = await fetchAudioBuffer(audioContext, state.currentAudio);
-
-        if (!buffer) {
-            throw new Error('Buffer audio invalide');
-        }
 
         const sampleRate = buffer.sampleRate;
         const startSample = Math.floor(startTime * sampleRate);
@@ -489,9 +457,7 @@ async function extractLoop() {
         const extractedLength = endSample - startSample;
 
         if (extractedLength <= 0) {
-            hideLoader();
             showToast('Portion invalide', 'error');
-            els.btnExtractLoop.disabled = false;
             return;
         }
 
@@ -529,24 +495,16 @@ async function extractLoop() {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        hideLoader();
+        audioContext.close();
         showToast('Loop extrait et téléchargé !');
 
     } catch (error) {
         console.error('Extract error:', error);
-        hideLoader();
         showToast('Erreur lors de l\'extraction', 'error');
-    } finally {
-        // Cleanup AudioContext
-        if (audioContext && audioContext.state !== 'closed') {
-            try {
-                await audioContext.close();
-            } catch (e) {
-                console.warn('AudioContext close error:', e);
-            }
-        }
-        els.btnExtractLoop.disabled = false;
     }
+
+    els.btnExtractLoop.disabled = false;
+    els.btnExtractLoop.querySelector('span').textContent = 'Extraire & Télécharger';
 }
 
 async function saveExtractedLoop() {
@@ -561,7 +519,6 @@ async function saveExtractedLoop() {
     }
 
     els.btnSaveExtract.disabled = true;
-    showLoader('Enregistrement du loop...');
 
     try {
         // If we don't have extracted data, extract it now
@@ -591,12 +548,11 @@ async function saveExtractedLoop() {
             const wavBlob = bufferToWave(extractedBuffer, extractedLength);
             const reader = new FileReader();
 
-            await new Promise((resolve, reject) => {
+            await new Promise((resolve) => {
                 reader.onload = () => {
                     state.extractedDataURL = reader.result;
                     resolve();
                 };
-                reader.onerror = reject;
                 reader.readAsDataURL(wavBlob);
             });
 
@@ -620,14 +576,12 @@ async function saveExtractedLoop() {
         renderLibrary();
         populateFusionSelects();
 
-        hideLoader();
         showToast('Loop enregistré dans la bibliothèque !');
         state.extractedDataURL = null;
         state.extractedBlob = null;
 
     } catch (error) {
         console.error('Save extract error:', error);
-        hideLoader();
         showToast('Erreur lors de l\'enregistrement', 'error');
     }
 
@@ -653,7 +607,6 @@ async function saveCurrentAudio() {
     state.library.push(audioItem);
     await saveLibrary();
     renderLibrary();
-    populateFusionSelects();
     showToast('Audio enregistré !');
 }
 
@@ -822,27 +775,18 @@ async function performFusion() {
     const audioA = state.library.find(a => a.id === idA);
     const audioB = state.library.find(a => a.id === idB);
 
-    if (!audioA || !audioB) {
-        showToast('Audio non trouvé', 'error');
-        return;
-    }
+    if (!audioA || !audioB) return;
 
     els.btnFusion.disabled = true;
-    showLoader('Fusion des audios en cours...');
-
-    let audioContext = null;
+    els.btnFusion.querySelector('span').textContent = 'Fusion...';
 
     try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         const [bufferA, bufferB] = await Promise.all([
             fetchAudioBuffer(audioContext, audioA.dataURL),
             fetchAudioBuffer(audioContext, audioB.dataURL)
         ]);
-
-        if (!bufferA || !bufferB) {
-            throw new Error('Impossible de charger les audios');
-        }
 
         const mergedLength = bufferA.length + bufferB.length;
         const numChannels = Math.max(bufferA.numberOfChannels, bufferB.numberOfChannels);
@@ -870,32 +814,19 @@ async function performFusion() {
             els.fusionPlayer.src = reader.result;
             els.fusionNameInput.value = `${audioA.nom} + ${audioB.nom}`;
             els.fusionResultCard.classList.remove('hidden');
-            hideLoader();
             showToast('Fusion terminée !');
         };
 
-        reader.onerror = () => {
-            hideLoader();
-            showToast('Erreur lors de la lecture', 'error');
-        };
-
         reader.readAsDataURL(wavBlob);
+        audioContext.close();
 
     } catch (error) {
         console.error('Fusion error:', error);
-        hideLoader();
         showToast('Erreur lors de la fusion', 'error');
-    } finally {
-        // Cleanup AudioContext
-        if (audioContext && audioContext.state !== 'closed') {
-            try {
-                await audioContext.close();
-            } catch (e) {
-                console.warn('AudioContext close error:', e);
-            }
-        }
-        els.btnFusion.disabled = false;
     }
+
+    els.btnFusion.disabled = false;
+    els.btnFusion.querySelector('span').textContent = 'Fusionner A + B';
 }
 
 async function fetchAudioBuffer(audioContext, dataURL) {
@@ -965,36 +896,23 @@ function downloadFusion() {
 async function saveFusion() {
     if (!state.fusionResult) return;
 
-    els.btnSaveFusion.disabled = true;
-    showLoader('Enregistrement de la fusion...');
+    const fusionName = els.fusionNameInput.value.trim() || `${state.fusionResult.nameA} + ${state.fusionResult.nameB}`;
 
-    try {
-        const fusionName = els.fusionNameInput.value.trim() || `${state.fusionResult.nameA} + ${state.fusionResult.nameB}`;
+    const fusionItem = {
+        id: generateId(),
+        nom: fusionName,
+        type: 'fusion',
+        dataURL: state.fusionResult.dataURL,
+        dateCreation: new Date().toISOString(),
+        loopStart: 0,
+        loopEnd: 0
+    };
 
-        const fusionItem = {
-            id: generateId(),
-            nom: fusionName,
-            type: 'fusion',
-            dataURL: state.fusionResult.dataURL,
-            dateCreation: new Date().toISOString(),
-            loopStart: 0,
-            loopEnd: 0
-        };
-
-        state.library.push(fusionItem);
-        await saveLibrary();
-        renderLibrary();
-        populateFusionSelects();
-
-        hideLoader();
-        showToast('Fusion enregistrée !');
-    } catch (error) {
-        console.error('Save fusion error:', error);
-        hideLoader();
-        showToast('Erreur lors de l\'enregistrement', 'error');
-    }
-
-    els.btnSaveFusion.disabled = false;
+    state.library.push(fusionItem);
+    await saveLibrary();
+    renderLibrary();
+    populateFusionSelects();
+    showToast('Fusion enregistrée !');
 }
 
 // ============================================
