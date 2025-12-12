@@ -79,7 +79,8 @@ body {
 .app-main {
     flex: 1;
     padding: var(--spacing-sm);
-    padding-bottom: calc(var(--nav-height) + var(--spacing-lg) + var(--safe-bottom));
+    /* Increased padding bottom to strictly prevent nav overlap */
+    padding-bottom: calc(var(--nav-height) + 60px + var(--safe-bottom));
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -856,6 +857,32 @@ body {
     /* Fusion result input */
     #fusion-name-input {
         font-size: 0.85rem;
+        padding-right: 10px;
+        /* Ensure text doesn't touch edges */
+    }
+
+    /* Force height for inputs to be touch-friendly */
+    input,
+    select,
+    .btn {
+        min-height: 48px;
+    }
+}
+
+/* Even smaller screens (fixes for 360px width or less) */
+@media (max-width: 370px) {
+    .loop-inputs {
+        grid-template-columns: 1fr;
+        /* Stack inputs vertically */
+        gap: 8px;
+    }
+
+    .input-group label {
+        font-size: 0.75rem;
+    }
+
+    .library-item-name {
+        max-width: 120px;
     }
 }
 
