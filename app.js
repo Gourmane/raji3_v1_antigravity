@@ -848,6 +848,10 @@ async function fetchAudioBuffer(audioContext, dataURL) {
 }
 
 function bufferToMP3(buffer) {
+    if (typeof lamejs === 'undefined') {
+        throw new Error('Bibliothèque MP3 (lamejs) non chargée');
+    }
+
     const channels = buffer.numberOfChannels;
     const sampleRate = buffer.sampleRate;
     const kbps = 128; // Standard quality

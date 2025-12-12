@@ -1,11 +1,12 @@
 // Service Worker pour rajiaa PWA
-const CACHE_NAME = 'rajiaa-cache-v2';
+const CACHE_NAME = 'rajiaa-cache-v3';
 const urlsToCache = [
     './',
     './index.html',
     './style.css',
     './app.js',
     './manifest.json',
+    './vendor/lame.min.js',
     './icons/icon-72x72.png',
     './icons/icon-96x96.png',
     './icons/icon-128x128.png',
