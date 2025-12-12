@@ -29,6 +29,7 @@ const state = {
     fusionAudioB: null,
     fusionResult: null,
     fusionBlob: null,
+    fusionBuffer: null,
     extractedBlob: null,
     extractedDataURL: null
 };
@@ -475,28 +476,38 @@ async function extractLoop() {
             }
         }
 
-        const wavBlob = bufferToWave(extractedBuffer, extractedLength);
-        state.extractedBlob = wavBlob;
+        const format = document.querySelector('input[name="extract-format"]:checked').value;
+        let blob, extension;
+
+        if (format === 'mp3') {
+            blob = bufferToMP3(extractedBuffer);
+            extension = 'mp3';
+        } else {
+            blob = bufferToWave(extractedBuffer, extractedLength);
+            extension = 'wav';
+        }
+
+        state.extractedBlob = blob;
 
         const reader = new FileReader();
         reader.onload = () => {
             state.extractedDataURL = reader.result;
         };
-        reader.readAsDataURL(wavBlob);
+        reader.readAsDataURL(blob);
 
         // Download immediately
         const extractName = els.extractName.value.trim() || 'loop_extract';
-        const url = URL.createObjectURL(wavBlob);
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${extractName}.wav`;
+        link.download = `${extractName}.${extension}`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
         audioContext.close();
-        showToast('Loop extrait et téléchargé !');
+        showToast(`Loop extrait et téléchargé (${extension.toUpperCase()}) !`);
 
     } catch (error) {
         console.error('Extract error:', error);
@@ -802,6 +813,7 @@ async function performFusion() {
 
         const wavBlob = bufferToWave(mergedBuffer, mergedLength);
         state.fusionBlob = wavBlob;
+        state.fusionBuffer = mergedBuffer; // Save for MP3 conversion
 
         const reader = new FileReader();
         reader.onload = () => {
@@ -833,6 +845,53 @@ async function fetchAudioBuffer(audioContext, dataURL) {
     const response = await fetch(dataURL);
     const arrayBuffer = await response.arrayBuffer();
     return audioContext.decodeAudioData(arrayBuffer);
+}
+
+function bufferToMP3(buffer) {
+    const channels = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const kbps = 128; // Standard quality
+
+    // Initialize encoder
+    const mp3encoder = new lamejs.Mp3Encoder(channels, sampleRate, kbps);
+    const mp3Data = [];
+
+    // Get samples (must be Int16)
+    const left = new Int16Array(buffer.length);
+    const right = channels > 1 ? new Int16Array(buffer.length) : undefined;
+
+    const leftChannel = buffer.getChannelData(0);
+    const rightChannel = channels > 1 ? buffer.getChannelData(1) : undefined;
+
+    for (let i = 0; i < buffer.length; i++) {
+        // Convert float -1.0...1.0 to int16 -32768...32767
+        const sL = Math.max(-1, Math.min(1, leftChannel[i]));
+        left[i] = sL < 0 ? sL * 0x8000 : sL * 0x7FFF;
+
+        if (right) {
+            const sR = Math.max(-1, Math.min(1, rightChannel[i]));
+            right[i] = sR < 0 ? sR * 0x8000 : sR * 0x7FFF;
+        }
+    }
+
+    // Encode
+    const sampleBlockSize = 1152;
+    for (let i = 0; i < buffer.length; i += sampleBlockSize) {
+        const leftChunk = left.subarray(i, i + sampleBlockSize);
+        const rightChunk = right ? right.subarray(i, i + sampleBlockSize) : undefined;
+
+        const mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+        if (mp3buf.length > 0) {
+            mp3Data.push(mp3buf);
+        }
+    }
+
+    const endBuf = mp3encoder.flush();
+    if (endBuf.length > 0) {
+        mp3Data.push(endBuf);
+    }
+
+    return new Blob(mp3Data, { type: 'audio/mp3' });
 }
 
 function bufferToWave(buffer, length) {
@@ -879,13 +938,32 @@ function writeString(view, offset, string) {
 }
 
 function downloadFusion() {
-    if (!state.fusionBlob) return;
+    if (!state.fusionBlob || !state.fusionBuffer) return;
 
+    const format = document.querySelector('input[name="fusion-format"]:checked').value;
     const fusionName = els.fusionNameInput.value.trim() || 'fusion';
-    const url = URL.createObjectURL(state.fusionBlob);
+
+    let blob, extension;
+    if (format === 'mp3') {
+        showToast('Conversion MP3 en cours...', 'info');
+        // Small timeout to let UI update
+        setTimeout(() => {
+            blob = bufferToMP3(state.fusionBuffer);
+            extension = 'mp3';
+            triggerDownload(blob, fusionName, extension);
+        }, 50);
+    } else {
+        blob = state.fusionBlob;
+        extension = 'wav';
+        triggerDownload(blob, fusionName, extension);
+    }
+}
+
+function triggerDownload(blob, name, extension) {
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${fusionName}.wav`;
+    link.download = `${name}.${extension}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
