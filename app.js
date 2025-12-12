@@ -653,6 +653,7 @@ async function saveCurrentAudio() {
     state.library.push(audioItem);
     await saveLibrary();
     renderLibrary();
+    populateFusionSelects();
     showToast('Audio enregistré !');
 }
 
