@@ -124,229 +124,227 @@
                         </div>
                         <div class="input-group">
                             <label>Format</label>
-                            <div class="format-selector">
-                                <label class="radio-label">
-                                    <input type="radio" name="extract-format" value="wav" checked>
-                                    <span class="radio-custom"></span>
-                                    WAV
-                                </label>
-                                <label class="radio-label">
-                                    <input type="radio" name="extract-format" value="mp3">
-                                    <span class="radio-custom"></span>
-                                    MP3
-                                </label>
-                            </div>
-                        </div>
-                        <div class="extract-actions">
-                            <button id="btn-extract-loop" class="btn btn-neon" disabled>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <polyline points="7 10 12 15 17 10" />
-                                    <line x1="12" y1="15" x2="12" y2="3" />
-                                </svg>
-                                <span>Extraire & Télécharger</span>
-                            </button>
-                            <button id="btn-save-extract" class="btn btn-neutral" disabled>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                                    <polyline points="17 21 17 13 7 13 7 21" />
-                                    <polyline points="7 3 7 8 15 8" />
-                                </svg>
-                                <span>Enregistrer Loop</span>
-                            </button>
+                            <label class="radio-label">
+                                <input type="radio" name="extract-format" value="wav" checked>
+                                <span class="radio-custom"></span>
+                                WAV (Studio)
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="extract-format" value="mp3">
+                                <span class="radio-custom"></span>
+                                MP3 (Partage)
+                            </label>
                         </div>
                     </div>
-                </div>
-
-                <!-- Library Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Bibliothèque</h2>
-                        <span id="library-count" class="badge">0 audios</span>
-                    </div>
-                    <div class="card-body">
-                        <div id="library-list" class="library-list">
-                            <p class="empty-state">Aucun audio enregistré</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Screen: Fusion -->
-            <section id="screen-fusion" class="screen">
-                <!-- Fusion Selection Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Sélection des audios</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="fusion-grid">
-                            <!-- Audio A -->
-                            <div class="fusion-column">
-                                <label class="fusion-label">Audio A</label>
-                                <select id="fusion-select-a" class="fusion-select">
-                                    <option value="">-- Sélectionner --</option>
-                                </select>
-                                <button id="btn-remove-a" class="btn btn-delete btn-small">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg>
-                                    Retirer A
-                                </button>
-                            </div>
-                            <!-- Audio B -->
-                            <div class="fusion-column">
-                                <label class="fusion-label">Audio B</label>
-                                <select id="fusion-select-b" class="fusion-select">
-                                    <option value="">-- Sélectionner --</option>
-                                </select>
-                                <button id="btn-remove-b" class="btn btn-delete btn-small">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <line x1="18" y1="6" x2="6" y2="18" />
-                                        <line x1="6" y1="6" x2="18" y2="18" />
-                                    </svg>
-                                    Retirer B
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fusion Action Card -->
-                <div class="card">
-                    <div class="card-body fusion-action">
-                        <button id="btn-fusion" class="btn btn-neon btn-large" disabled>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    <div class="extract-actions">
+                        <button id="btn-extract-loop" class="btn btn-neon" disabled>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="12" y1="8" x2="12" y2="16" />
-                                <line x1="8" y1="12" x2="16" y2="12" />
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
                             </svg>
-                            <span>Fusionner A + B</span>
+                            <span>Extraire & Télécharger</span>
+                        </button>
+                        <button id="btn-save-extract" class="btn btn-neutral" disabled>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                <polyline points="17 21 17 13 7 13 7 21" />
+                                <polyline points="7 3 7 8 15 8" />
+                            </svg>
+                            <span>Enregistrer Loop</span>
                         </button>
                     </div>
                 </div>
+    </div>
 
-                <!-- Fusion Result Card -->
-                <div id="fusion-result-card" class="card hidden">
-                    <div class="card-header">
-                        <h2>Résultat de la fusion</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="player-container">
-                            <audio id="fusion-player" controls></audio>
-                        </div>
-                        <div class="input-group" style="margin-top: 16px;">
-                            <label for="fusion-name-input">Nom de la fusion</label>
-                            <input type="text" id="fusion-name-input" placeholder="Ma fusion audio">
-                        </div>
-                        <div class="input-group">
-                            <label>Format</label>
-                            <div class="format-selector">
-                                <label class="radio-label">
-                                    <input type="radio" name="fusion-format" value="wav" checked>
-                                    <span class="radio-custom"></span>
-                                    WAV
-                                </label>
-                                <label class="radio-label">
-                                    <input type="radio" name="fusion-format" value="mp3">
-                                    <span class="radio-custom"></span>
-                                    MP3
-                                </label>
-                            </div>
-                        </div>
-                        <div class="fusion-result-actions">
-                            <button id="btn-download-fusion" class="btn btn-neutral">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <polyline points="7 10 12 15 17 10" />
-                                    <line x1="12" y1="15" x2="12" y2="3" />
-                                </svg>
-                                <span>Télécharger</span>
-                            </button>
-                            <button id="btn-save-fusion" class="btn btn-neon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                                    <polyline points="17 21 17 13 7 13 7 21" />
-                                    <polyline points="7 3 7 8 15 8" />
-                                </svg>
-                                <span>Enregistrer</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
+    <!-- Library Card -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Bibliothèque</h2>
+            <span id="library-count" class="badge">0 audios</span>
+        </div>
+        <div class="card-body">
+            <div id="library-list" class="library-list">
+                <p class="empty-state">Aucun audio enregistré</p>
+            </div>
+        </div>
+    </div>
+    </section>
 
-            <!-- Screen: Settings -->
-            <section id="screen-settings" class="screen">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Paramètres</h2>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-secondary">Options à venir.</p>
-                        <div class="settings-placeholder">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="1.5" opacity="0.3">
-                                <circle cx="12" cy="12" r="3" />
-                                <path
-                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    <!-- Screen: Fusion -->
+    <section id="screen-fusion" class="screen">
+        <!-- Fusion Selection Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Sélection des audios</h2>
+            </div>
+            <div class="card-body">
+                <div class="fusion-grid">
+                    <!-- Audio A -->
+                    <div class="fusion-column">
+                        <label class="fusion-label">Audio A</label>
+                        <select id="fusion-select-a" class="fusion-select">
+                            <option value="">-- Sélectionner --</option>
+                        </select>
+                        <button id="btn-remove-a" class="btn btn-delete btn-small">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
-                            <p>Fonctionnalités en développement</p>
-                        </div>
+                            Retirer A
+                        </button>
+                    </div>
+                    <!-- Audio B -->
+                    <div class="fusion-column">
+                        <label class="fusion-label">Audio B</label>
+                        <select id="fusion-select-b" class="fusion-select">
+                            <option value="">-- Sélectionner --</option>
+                        </select>
+                        <button id="btn-remove-b" class="btn btn-delete btn-small">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                            Retirer B
+                        </button>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- App Info Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>À propos</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="about-info">
-                            <p><strong>rajiaa</strong> – Audio Loop & Fusion</p>
-                            <p class="text-secondary">Version 1.0.0</p>
-                        </div>
+        <!-- Fusion Action Card -->
+        <div class="card">
+            <div class="card-body fusion-action">
+                <button id="btn-fusion" class="btn btn-neon btn-large" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
+                    </svg>
+                    <span>Fusionner A + B</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Fusion Result Card -->
+        <div id="fusion-result-card" class="card hidden">
+            <div class="card-header">
+                <h2>Résultat de la fusion</h2>
+            </div>
+            <div class="card-body">
+                <div class="player-container">
+                    <audio id="fusion-player" controls></audio>
+                </div>
+                <div class="input-group" style="margin-top: 16px;">
+                    <label for="fusion-name-input">Nom de la fusion</label>
+                    <input type="text" id="fusion-name-input" placeholder="Ma fusion audio">
+                </div>
+                <div class="input-group">
+                    <label>Format</label>
+                    <div class="format-selector">
+                        <label class="radio-label">
+                            <input type="radio" name="fusion-format" value="wav" checked>
+                            <span class="radio-custom"></span>
+                            WAV (Studio)
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="fusion-format" value="mp3">
+                            <span class="radio-custom"></span>
+                            MP3 (Partage)
+                        </label>
                     </div>
                 </div>
-            </section>
-        </main>
+                <div class="fusion-result-actions">
+                    <button id="btn-download-fusion" class="btn btn-neutral">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span>Télécharger</span>
+                    </button>
+                    <button id="btn-save-fusion" class="btn btn-neon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        <span>Enregistrer</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <button class="nav-btn active" data-screen="loop">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="17 1 21 5 17 9" />
-                    <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-                    <polyline points="7 23 3 19 7 15" />
-                    <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-                </svg>
-                <span>Loop</span>
-            </button>
-            <button class="nav-btn" data-screen="fusion">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="16" />
-                    <line x1="8" y1="12" x2="16" y2="12" />
-                </svg>
-                <span>Fusion</span>
-            </button>
-            <button class="nav-btn" data-screen="settings">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3" />
-                    <path
-                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                </svg>
-                <span>Paramètres</span>
-            </button>
-        </nav>
+    <!-- Screen: Settings -->
+    <section id="screen-settings" class="screen">
+        <div class="card">
+            <div class="card-header">
+                <h2>Paramètres</h2>
+            </div>
+            <div class="card-body">
+                <p class="text-secondary">Options à venir.</p>
+                <div class="settings-placeholder">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        opacity="0.3">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    </svg>
+                    <p>Fonctionnalités en développement</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Info Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2>À propos</h2>
+            </div>
+            <div class="card-body">
+                <div class="about-info">
+                    <p><strong>rajiaa</strong> – Audio Loop & Fusion</p>
+                    <p class="text-secondary">Version 1.0.0</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-screen="loop">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="17 1 21 5 17 9" />
+                <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                <polyline points="7 23 3 19 7 15" />
+                <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+            </svg>
+            <span>Loop</span>
+        </button>
+        <button class="nav-btn" data-screen="fusion">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+            <span>Fusion</span>
+        </button>
+        <button class="nav-btn" data-screen="settings">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            <span>Paramètres</span>
+        </button>
+    </nav>
     </div>
 
     <!-- Rename Modal -->
