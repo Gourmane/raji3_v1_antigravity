@@ -246,7 +246,7 @@ body {
     border-radius: var(--radius-sm);
     background: #090909;
     border: 1px solid var(--border);
-    overflow: hidden;
+    overflow: visible;
     touch-action: none;
     cursor: pointer;
 }
@@ -261,6 +261,7 @@ body {
     inset: 0;
     width: 100%;
     height: 100%;
+    border-radius: inherit;
 }
 
 .waveform-selection {
@@ -314,19 +315,19 @@ body {
 }
 
 .waveform-handle-start {
-    left: -12px;
+    left: -2px;
 }
 
 .waveform-handle-start::after {
-    left: 10px;
+    left: 0;
 }
 
 .waveform-handle-end {
-    right: -12px;
+    right: -2px;
 }
 
 .waveform-handle-end::after {
-    right: 10px;
+    right: 0;
 }
 
 .waveform-playhead {
@@ -594,6 +595,11 @@ body {
     padding: var(--spacing-xl);
     color: var(--text-secondary);
     font-size: 0.9rem;
+}
+
+.empty-state-hint {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
 }
 
 .empty-state-panel {
@@ -966,6 +972,45 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .library-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .library-item-info,
+    .library-item-actions {
+        width: 100%;
+    }
+
+    .library-item-actions {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(44px, 1fr));
+        gap: var(--spacing-xs);
+    }
+
+    .library-item-actions .btn {
+        width: 100%;
+    }
+
+    .library-item-meta {
+        gap: 5px 8px;
+        line-height: 1.35;
+    }
+
+    .waveform-panel {
+        padding: var(--spacing-xs);
+    }
+
+    .waveform-meta {
+        flex-direction: column;
+        gap: 2px;
+        align-items: flex-start;
+    }
+
+    .waveform-track {
+        height: 76px;
+    }
+
     .loop-actions {
         flex-direction: column;
     }
@@ -998,17 +1043,7 @@ body {
     }
 
     .library-item-actions {
-        flex-wrap: wrap;
-    }
-
-    .library-item {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .library-item-actions {
-        width: 100%;
-        justify-content: flex-end;
+        grid-template-columns: repeat(2, minmax(44px, 1fr));
     }
 }
 /* Format Selector */

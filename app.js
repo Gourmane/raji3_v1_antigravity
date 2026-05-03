@@ -1563,9 +1563,7 @@ function renderLibrary() {
         els.libraryList.innerHTML = `
             <div class="empty-state empty-state-panel">
                 <p>Aucun audio enregistre.</p>
-                <button class="btn btn-neutral btn-small" data-empty-action="import" type="button">
-                    <span>Importer un audio</span>
-                </button>
+                <p class="empty-state-hint">Utilise la carte Importer un audio en haut de l'ecran.</p>
             </div>
         `;
         return;
@@ -2070,9 +2068,7 @@ async function saveFusion() {
 async function handleLibraryAction(event) {
     const emptyAction = event.target.closest('[data-empty-action]');
     if (emptyAction) {
-        if (emptyAction.dataset.emptyAction === 'import') {
-            els.audioInput.click();
-        } else if (emptyAction.dataset.emptyAction === 'clear-search') {
+        if (emptyAction.dataset.emptyAction === 'clear-search') {
             state.librarySearch = '';
             els.librarySearch.value = '';
             renderLibrary();
