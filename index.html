@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0B0B0B">
     <meta name="description" content="rajiaa - Audio Loop & Fusion App. Importez, bouclez et fusionnez vos audios.">
 
@@ -50,7 +50,9 @@
                     </div>
                     <div class="card-body">
                         <label class="file-input-wrapper">
-                            <input type="file" id="audio-input" accept="audio/*" hidden>
+                            <input type="file" id="audio-input"
+                                accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/aac,audio/ogg,.mp3,.wav,.m4a,.ogg"
+                                class="visually-hidden">
                             <div class="file-input-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2">
@@ -67,6 +69,25 @@
                             <audio id="audio-player" controls></audio>
                             <div class="audio-info">
                                 <span id="audio-duration">Durée: --:--</span>
+                            </div>
+                            <div id="waveform-panel" class="waveform-panel hidden">
+                                <div class="waveform-meta">
+                                    <span id="waveform-current">00:00</span>
+                                    <span id="waveform-loop-label">Loop: --:-- - --:--</span>
+                                </div>
+                                <div id="waveform-track" class="waveform-track" role="slider" tabindex="0"
+                                    aria-label="Waveform audio. Cliquer pour déplacer la lecture. Déplacer la sélection pour modifier la boucle."
+                                    aria-valuemin="0" aria-valuemax="0" aria-valuenow="0">
+                                    <canvas id="waveform-canvas"></canvas>
+                                    <div id="waveform-selection" class="waveform-selection" data-wave-action="move">
+                                        <span class="waveform-handle waveform-handle-start" data-wave-handle="start"
+                                            aria-hidden="true"></span>
+                                        <span class="waveform-handle waveform-handle-end" data-wave-handle="end"
+                                            aria-hidden="true"></span>
+                                    </div>
+                                    <div id="waveform-playhead" class="waveform-playhead"></div>
+                                </div>
+                                <p id="waveform-status" class="waveform-status">Waveform en attente</p>
                             </div>
                         </div>
                     </div>
@@ -88,6 +109,7 @@
                                 <input type="text" id="loop-end" placeholder="00:30" maxlength="5">
                             </div>
                         </div>
+                        <p id="loop-validation" class="loop-validation" role="status" aria-live="polite"></p>
                         <div class="loop-actions">
                             <button id="btn-toggle-loop" class="btn btn-neon" disabled>
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -107,6 +129,32 @@
                                     <polyline points="7 3 7 8 15 8" />
                                 </svg>
                                 <span>Enregistrer</span>
+                            </button>
+                        </div>
+                        <div class="loop-tools" aria-label="Outils de selection loop">
+                            <button id="btn-go-loop-start" class="btn btn-neutral btn-small" disabled>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polygon points="19 20 9 12 19 4 19 20" />
+                                    <line x1="5" y1="19" x2="5" y2="5" />
+                                </svg>
+                                <span>Debut</span>
+                            </button>
+                            <button id="btn-clear-loop" class="btn btn-neutral btn-small" disabled>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                                <span>Clear</span>
+                            </button>
+                            <button id="btn-lock-loop" class="btn btn-neutral btn-small" disabled aria-pressed="false">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="5" y="11" width="14" height="10" rx="2" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                                <span>Lock</span>
                             </button>
                         </div>
                     </div>
@@ -135,6 +183,18 @@
                                 MP3 (Partage)
                             </label>
                         </div>
+                        <div id="export-progress" class="export-progress hidden" role="status" aria-live="polite">
+                            <div class="export-progress-meta">
+                                <span id="export-progress-label">Export de la boucle...</span>
+                                <span id="export-progress-value">0%</span>
+                            </div>
+                            <div class="export-progress-track" aria-hidden="true">
+                                <div id="export-progress-bar" class="export-progress-bar"></div>
+                            </div>
+                            <button id="btn-cancel-export" class="btn btn-neutral btn-small" type="button">
+                                <span>Annuler</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="extract-actions">
                         <button id="btn-extract-loop" class="btn btn-neon" disabled>
@@ -157,7 +217,6 @@
                         </button>
                     </div>
                 </div>
-    </div>
 
     <!-- Library Card -->
     <div class="card">
@@ -166,6 +225,22 @@
             <span id="library-count" class="badge">0 audios</span>
         </div>
         <div class="card-body">
+            <div class="library-toolbar" aria-label="Filtres bibliotheque">
+                <div class="input-group library-search">
+                    <label for="library-search">Recherche</label>
+                    <input type="search" id="library-search" placeholder="Nom audio">
+                </div>
+                <div class="input-group library-sort">
+                    <label for="library-sort">Tri</label>
+                    <select id="library-sort" class="fusion-select">
+                        <option value="newest">Recents</option>
+                        <option value="oldest">Anciens</option>
+                        <option value="name">Nom A-Z</option>
+                        <option value="duration">Duree</option>
+                        <option value="size">Taille</option>
+                    </select>
+                </div>
+            </div>
             <div id="library-list" class="library-list">
                 <p class="empty-state">Aucun audio enregistré</p>
             </div>
@@ -318,7 +393,7 @@
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
+    <nav class="bottom-nav" aria-label="Navigation principale">
         <button class="nav-btn active" data-screen="loop">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="17 1 21 5 17 9" />
@@ -347,11 +422,15 @@
     </nav>
     </div>
 
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
     <!-- Rename Modal -->
-    <div id="rename-modal" class="modal hidden">
-        <div class="modal-backdrop"></div>
+    <div id="rename-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="rename-modal-title"
+        aria-describedby="rename-modal-description" tabindex="-1">
+        <div class="modal-backdrop" aria-hidden="true"></div>
         <div class="modal-content">
-            <h3>Renommer l'audio</h3>
+            <h3 id="rename-modal-title">Renommer l'audio</h3>
+            <p id="rename-modal-description" class="modal-description">Choisis un nom clair pour le retrouver dans la bibliotheque.</p>
             <input type="text" id="rename-input" placeholder="Nouveau nom">
             <div class="modal-actions">
                 <button id="btn-cancel-rename" class="btn btn-neutral">Annuler</button>

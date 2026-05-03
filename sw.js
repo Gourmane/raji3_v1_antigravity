@@ -1,10 +1,11 @@
 // Service Worker pour rajiaa PWA
-const CACHE_NAME = 'rajiaa-cache-v3';
+const CACHE_NAME = 'rajiaa-cache-v7';
 const urlsToCache = [
     './',
     './index.html',
     './style.css',
     './app.js',
+    './export-worker.js',
     './manifest.json',
     './vendor/lame.min.js',
     './icons/icon-72x72.png',
@@ -19,15 +20,12 @@ const urlsToCache = [
 
 // Installation du Service Worker
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installation en cours...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[SW] Mise en cache des fichiers');
                 return cache.addAll(urlsToCache);
             })
             .then(() => {
-                console.log('[SW] Installation terminée');
                 return self.skipWaiting();
             })
             .catch((error) => {
@@ -38,19 +36,16 @@ self.addEventListener('install', (event) => {
 
 // Activation du Service Worker
 self.addEventListener('activate', (event) => {
-    console.log('[SW] Activation en cours...');
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('[SW] Suppression de l\'ancien cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         }).then(() => {
-            console.log('[SW] Activation terminée');
             return self.clients.claim();
         })
     );
